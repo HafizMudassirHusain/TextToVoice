@@ -4,6 +4,88 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <title>Text to Voice Converter</title>
+</head>
+<body>
+    <div>
+        <h1>Text to <strong>Voice</strong> Converter</h1>
+        <h4>Here you can write anything you want to convert TEXT-to-VOICE</h4>
+        <textarea name="" id="textbox" placeholder="Typing..." cols="50" rows="10"></textarea>
+        <select id="voices"></select>
+        <div class="btndiv">
+        <button id="speakbtn" onclick="speak()">Speak</button>
+        <button id="pausebtn" onclick="pause()">Pause</button>
+        <button id="resumebtn" onclick="resume()">Resume</button>
+        <button id="stopbtn" onclick="stop()">Stop</button>
+    </div>
+    <h1 style="background: none;">H-M-H 
+        <img style="width: 100px;" src="https://i.pinimg.com/originals/4c/bb/82/4cbb82f4845e4a3700117d56b3a55c51.png" alt=""></h1>
+        <h2>More addition in the future!</h2>
+    </div> 
+
+    <script>
+        let synth = window.speechSynthesis;
+        let voices = [];
+
+        function populateVoiceList() {
+            voices = synth.getVoices();
+
+            const voiceSelect = document.getElementById('voices');
+            voices.forEach((voice, index) => {
+                const option = document.createElement('option');
+                option.textContent = voice.name + ' (' + voice.lang + ')';
+                option.setAttribute('data-lang', voice.lang);
+                option.setAttribute('data-name', voice.name);
+                voiceSelect.appendChild(option);
+            });
+        }
+
+        populateVoiceList();
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = populateVoiceList;
+        }
+
+        function speak() {
+            let voiceSelect = document.getElementById('voices');
+            let selectedVoiceName = voiceSelect.selectedOptions[0].getAttribute('data-name');
+            let selectedVoice = voices.find(voice => voice.name === selectedVoiceName);
+            let utterance = new SpeechSynthesisUtterance(document.querySelector("#textbox").value);
+            utterance.voice = selectedVoice;
+            synth.speak(utterance);
+        }
+
+        function pause() {
+            synth.pause();
+        }
+
+        function resume() {
+            synth.resume();
+        }
+
+        function stop() {
+            synth.cancel();
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <title>Document</title>
 </head>
 <body>
@@ -14,8 +96,16 @@
     <button id="speakbtn" onclick="speak()">Speak</button>
     <h1 style="background: none;">H-M-H 
         <img style="width: 100px;" src="https://i.pinimg.com/originals/4c/bb/82/4cbb82f4845e4a3700117d56b3a55c51.png" alt=""></h1>
-</div>
+</div> 
 
-<script src="app.js"></script>
+
+ <script> function speak(){
+    let synth = window.speechSynthesis;
+    let voice = new SpeechSynthesisUtterance(document.querySelector("#textbox").value);
+    synth.speak(voice);
+} 
+</script>
 </body>
 </html>
+
+ -->
